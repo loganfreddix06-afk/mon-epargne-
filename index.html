@@ -109,6 +109,78 @@
 
   svg .track { stroke: #34383B; }
   svg .tick { stroke: #5C6266; }
+
+  .expenses-section { margin-top: 32px; }
+  .sub-panel { padding: 18px; margin-bottom: 16px; }
+  .sub-panel-title {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 14px; color: #EDEAE3; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .sub-panel-title .total { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8B9299; }
+
+  .sub-row {
+    display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-top: 1px solid #34383B;
+  }
+  .sub-row:first-of-type { border-top: none; }
+  .sub-row .name { font-size: 14px; color: #EDEAE3; }
+  .sub-row .right { display: flex; align-items: center; gap: 10px; }
+  .sub-row .amt { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #D97A4A; }
+  .sub-row .del { background: none; border: none; color: #5C6266; padding: 2px; display: flex; }
+  .sub-empty { color: #8B9299; font-size: 13px; padding: 6px 0; }
+
+  .sub-add-form { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .sub-add-form input {
+    background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3; padding: 8px 10px; font-size: 14px;
+  }
+  .sub-add-form input.name { flex: 2 1 140px; }
+  .sub-add-form input.amt { flex: 1 1 90px; font-family: 'JetBrains Mono', monospace; }
+  .sub-add-form select {
+    flex: 1 1 110px; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3;
+    padding: 8px 6px; font-size: 13px;
+  }
+  .sub-add-form .create { background: #E8A33D; border: none; border-radius: 6px; color: #1B1D1F; padding: 0 14px; font-weight: 700; }
+  .badge {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
+  }
+  .badge.essentiel { background: rgba(217,122,74,0.18); color: #D97A4A; }
+  .badge.loisir { background: rgba(232,163,61,0.18); color: #E8A33D; }
+
+  .envelope-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .envelope-header .value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8B9299; }
+  .envelope-bar { height: 8px; background: #1B1D1F; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+  .envelope-fill { height: 100%; transition: width 0.6s ease; }
+  .envelope-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .envelope-actions input {
+    flex: 1; min-width: 90px; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3;
+    padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  }
+  .envelope-actions .ok { background: #E8A33D; border: none; border-radius: 6px; color: #1B1D1F; padding: 0 14px; font-weight: 700; }
+  .envelope-actions .reset { background: none; border: 1px solid #34383B; border-radius: 6px; color: #8B9299; padding: 0 12px; font-size: 12px; white-space: nowrap; }
+  .envelope-target-edit { display: flex; gap: 6px; margin-top: 10px; align-items: center; }
+  .envelope-target-edit label { font-size: 12px; color: #8B9299; white-space: nowrap; }
+  .envelope-target-edit input {
+    width: 90px; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3;
+    padding: 6px 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+
+  .split-panel { padding: 18px 20px; margin-bottom: 24px; }
+  .split-salary-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .split-salary-row label { font-size: 13px; color: #8B9299; white-space: nowrap; }
+  .split-salary-row input {
+    width: 110px; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3;
+    padding: 7px 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  }
+  .split-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+  .split-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .split-label { flex: 1; font-size: 14px; color: #EDEAE3; }
+  .split-sub { font-size: 12px; color: #8B9299; display: block; }
+  .split-amt { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #EDEAE3; flex-shrink: 0; }
+  .split-bar-wrap { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin: 4px 0 16px; }
+  .split-bar-wrap div { height: 100%; transition: width 0.5s ease; }
+  .split-note {
+    font-size: 12px; color: #8B9299; margin-bottom: 14px; padding: 10px 12px;
+    background: #1B1D1F; border-radius: 6px; border-left: 2px solid #E8A33D; line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -119,6 +191,20 @@
     <span>Carnet d'entretien financier</span>
   </div>
   <h1>Tableau de bord — Épargne</h1>
+
+  <div class="panel split-panel">
+    <div class="sub-panel-title" style="margin-bottom:14px;">Répartition 50 / 30 / 20</div>
+    <div class="split-salary-row">
+      <label>Salaire net mensuel :</label>
+      <input type="number" id="salary-input" placeholder="1955">
+      <label>Loyer :</label>
+      <input type="number" id="rent-input" placeholder="300">
+      <button class="reset" id="salary-save">OK</button>
+    </div>
+    <div class="split-note" id="split-note"></div>
+    <div class="split-bar-wrap" id="split-bar"></div>
+    <div id="split-rows"></div>
+  </div>
 
   <div class="panel matelas">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v3"/></svg>
@@ -141,6 +227,45 @@
     <button class="cancel" id="newgoal-cancel">✕</button>
   </div>
 
+  <div class="expenses-section">
+    <h2>Budget dépenses</h2>
+
+    <div class="panel sub-panel">
+      <div class="sub-panel-title">
+        <span>Abonnements fixes</span>
+        <span class="total" id="fixed-total">0 € / mois</span>
+      </div>
+      <div id="fixed-list"></div>
+      <div class="sub-add-form">
+        <input class="name" id="fixed-name" placeholder="Nom (ex: Forfait mobile)">
+        <input class="amt" id="fixed-amt" type="number" placeholder="€ / mois">
+        <select id="fixed-category">
+          <option value="essentiel">Essentiel</option>
+          <option value="loisir">Loisir</option>
+        </select>
+        <button class="create" id="fixed-create">+ Ajouter</button>
+      </div>
+    </div>
+
+    <div class="panel sub-panel">
+      <div class="envelope-header">
+        <span class="sub-panel-title" style="margin:0;">Enveloppe loisirs / sorties</span>
+        <span class="value" id="envelope-value">0 € / 0 €</span>
+      </div>
+      <div class="envelope-bar"><div class="envelope-fill" id="envelope-fill" style="width:0%"></div></div>
+      <div class="envelope-actions">
+        <input type="number" id="envelope-spend" placeholder="Dépense €">
+        <button class="ok" id="envelope-spend-btn">Ajouter</button>
+        <button class="reset" id="envelope-reset-btn">Nouveau mois</button>
+      </div>
+      <div class="envelope-target-edit">
+        <label>Objectif mensuel :</label>
+        <input type="number" id="envelope-target-input">
+        <button class="reset" id="envelope-target-save">OK</button>
+      </div>
+    </div>
+  </div>
+
   <h2>Carnet de bord</h2>
   <div class="panel log-panel" id="log-panel"></div>
 </div>
@@ -148,6 +273,9 @@
 <script>
 const STORAGE_KEY = "epargne-goals-v1";
 const LOG_KEY = "epargne-log-v1";
+const EXPENSES_KEY = "epargne-expenses-v1";
+const SALARY_KEY = "epargne-salary-v1";
+const RENT_KEY = "epargne-rent-v1";
 const MATELAS_TARGET = 3000;
 
 const DEFAULT_GOALS = [
@@ -176,6 +304,44 @@ function loadLog() {
 function saveLog(log) {
   localStorage.setItem(LOG_KEY, JSON.stringify(log));
 }
+
+const DEFAULT_EXPENSES = { fixedItems: [], envelopeTarget: 350, envelopeSpent: 0 };
+function loadExpenses() {
+  try {
+    const raw = localStorage.getItem(EXPENSES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      parsed.fixedItems = (parsed.fixedItems || []).map(it => ({ category: "essentiel", ...it }));
+      return parsed;
+    }
+  } catch (e) {}
+  return { ...DEFAULT_EXPENSES };
+}
+function saveExpenses(expenses) {
+  localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
+}
+
+let expenses = loadExpenses();
+
+function loadSalary() {
+  const raw = localStorage.getItem(SALARY_KEY);
+  const v = parseFloat(raw);
+  return !isNaN(v) && v > 0 ? v : 1955;
+}
+function saveSalary(v) {
+  localStorage.setItem(SALARY_KEY, String(v));
+}
+let salary = loadSalary();
+
+function loadRent() {
+  const raw = localStorage.getItem(RENT_KEY);
+  const v = parseFloat(raw);
+  return !isNaN(v) && v >= 0 ? v : 300;
+}
+function saveRent(v) {
+  localStorage.setItem(RENT_KEY, String(v));
+}
+let rent = loadRent();
 
 let goals = loadGoals();
 let log = loadLog();
@@ -284,6 +450,147 @@ function render() {
   }
 
   attachEvents();
+  renderExpenses();
+}
+
+function renderExpenses() {
+  // Fixed subscriptions
+  const fixedTotal = expenses.fixedItems.reduce((s, it) => s + it.amount, 0);
+  document.getElementById("fixed-total").textContent = `${formatEUR(fixedTotal)} / mois`;
+  const fixedList = document.getElementById("fixed-list");
+  if (expenses.fixedItems.length === 0) {
+    fixedList.innerHTML = `<div class="sub-empty">Aucun abonnement enregistré.</div>`;
+  } else {
+    fixedList.innerHTML = expenses.fixedItems.map(it => `
+      <div class="sub-row">
+        <span class="name">${it.name} <span class="badge ${it.category}">${it.category === "essentiel" ? "Essentiel" : "Loisir"}</span></span>
+        <div class="right">
+          <span class="amt">${formatEUR(it.amount)}</span>
+          <button class="del" data-fixed="${it.id}" aria-label="Supprimer ${it.name}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join("");
+  }
+  document.querySelectorAll(".sub-row .del").forEach(btn => {
+    btn.onclick = () => {
+      expenses.fixedItems = expenses.fixedItems.filter(it => it.id !== btn.dataset.fixed);
+      saveExpenses(expenses);
+      renderExpenses();
+    };
+  });
+
+  // Envelope
+  const pct = expenses.envelopeTarget > 0 ? Math.min(100, (expenses.envelopeSpent / expenses.envelopeTarget) * 100) : 0;
+  document.getElementById("envelope-value").textContent = `${formatEUR(expenses.envelopeSpent)} / ${formatEUR(expenses.envelopeTarget)}`;
+  const fill = document.getElementById("envelope-fill");
+  fill.style.width = pct + "%";
+  fill.style.background = pct >= 100 ? "#D97A4A" : pct >= 80 ? "#E8A33D" : "#7FB77E";
+  document.getElementById("envelope-target-input").value = expenses.envelopeTarget;
+
+  renderSplit();
+}
+
+function renderSplit() {
+  document.getElementById("salary-input").value = salary;
+  document.getElementById("rent-input").value = rent;
+
+  const essentiels = expenses.fixedItems.filter(it => it.category === "essentiel").reduce((s, it) => s + it.amount, 0);
+  const loisirsAbonnements = expenses.fixedItems.filter(it => it.category === "loisir").reduce((s, it) => s + it.amount, 0);
+
+  const besoinsReel = rent + essentiels;
+  const enviesReel = loisirsAbonnements + expenses.envelopeTarget;
+  const epargneReel = Math.max(0, salary - besoinsReel - enviesReel);
+
+  const besoinsPct = salary > 0 ? besoinsReel / salary : 0;
+  const enviesPct = salary > 0 ? enviesReel / salary : 0;
+  const epargnePct = salary > 0 ? epargneReel / salary : 0;
+
+  let note;
+  if (epargnePct >= 0.30) {
+    note = `Sur la base de tes charges réelles (loyer + abonnements essentiels + enveloppe loisirs), il te reste ${formatEUR(epargneReel)} par mois pour épargner, soit ${Math.round(epargnePct * 100)}% de ton salaire — bien au-dessus des 20% classiques.`;
+  } else if (epargnePct >= 0.15) {
+    note = `Sur la base de tes charges réelles, il te reste ${formatEUR(epargneReel)} par mois pour épargner, soit ${Math.round(epargnePct * 100)}% de ton salaire — dans la norme.`;
+  } else {
+    note = `Sur la base de tes charges réelles, il ne reste que ${formatEUR(epargneReel)} par mois pour épargner (${Math.round(epargnePct * 100)}%). Vérifie si certaines dépenses "loisir" peuvent être réduites.`;
+  }
+
+  document.getElementById("split-note").textContent = note;
+
+  const barEl = document.getElementById("split-bar");
+  barEl.innerHTML = `
+    <div style="width:${Math.min(100, besoinsPct * 100)}%; background:#D97A4A;"></div>
+    <div style="width:${Math.min(100, enviesPct * 100)}%; background:#E8A33D;"></div>
+    <div style="width:${Math.min(100, Math.max(0, epargnePct * 100))}%; background:#7FB77E;"></div>
+  `;
+
+  const rows = [
+    { color: "#D97A4A", label: `Besoins essentiels (${Math.round(besoinsPct * 100)}%)`, sub: `Loyer ${formatEUR(rent)} + essentiels ${formatEUR(essentiels)}`, amt: besoinsReel },
+    { color: "#E8A33D", label: `Envies / loisirs (${Math.round(enviesPct * 100)}%)`, sub: `Abos loisir ${formatEUR(loisirsAbonnements)} + enveloppe ${formatEUR(expenses.envelopeTarget)}`, amt: enviesReel },
+    { color: "#7FB77E", label: `Épargne disponible (${Math.round(epargnePct * 100)}%)`, sub: "Salaire − besoins − envies", amt: epargneReel },
+  ];
+
+  document.getElementById("split-rows").innerHTML = rows.map(r => `
+    <div class="split-row">
+      <div class="split-dot" style="background:${r.color}"></div>
+      <div class="split-label">${r.label}<span class="split-sub">${r.sub}</span></div>
+      <div class="split-amt">${formatEUR(r.amt)}</div>
+    </div>
+  `).join("");
+}
+
+function attachExpenseEvents() {
+  document.getElementById("salary-save").onclick = () => {
+    const salaryInput = document.getElementById("salary-input");
+    const rentInput = document.getElementById("rent-input");
+    const sv = parseFloat(salaryInput.value);
+    const rv = parseFloat(rentInput.value);
+    if (!isNaN(sv) && sv > 0) { salary = sv; saveSalary(salary); }
+    if (!isNaN(rv) && rv >= 0) { rent = rv; saveRent(rent); }
+    renderSplit();
+  };
+
+  document.getElementById("fixed-create").onclick = () => {
+    const nameInput = document.getElementById("fixed-name");
+    const amtInput = document.getElementById("fixed-amt");
+    const catInput = document.getElementById("fixed-category");
+    const name = nameInput.value.trim();
+    const amount = parseFloat(amtInput.value);
+    if (!name || isNaN(amount) || amount <= 0) return;
+    expenses.fixedItems.push({ id: `fixed-${Date.now()}`, name, amount, category: catInput.value });
+    saveExpenses(expenses);
+    nameInput.value = "";
+    amtInput.value = "";
+    renderExpenses();
+  };
+
+  document.getElementById("envelope-spend-btn").onclick = () => {
+    const input = document.getElementById("envelope-spend");
+    const v = parseFloat(input.value);
+    if (!isNaN(v) && v > 0) {
+      expenses.envelopeSpent = Math.max(0, expenses.envelopeSpent + v);
+      saveExpenses(expenses);
+      input.value = "";
+      renderExpenses();
+    }
+  };
+
+  document.getElementById("envelope-reset-btn").onclick = () => {
+    expenses.envelopeSpent = 0;
+    saveExpenses(expenses);
+    renderExpenses();
+  };
+
+  document.getElementById("envelope-target-save").onclick = () => {
+    const input = document.getElementById("envelope-target-input");
+    const v = parseFloat(input.value);
+    if (!isNaN(v) && v >= 0) {
+      expenses.envelopeTarget = v;
+      saveExpenses(expenses);
+      renderExpenses();
+    }
+  };
 }
 
 function attachEvents() {
@@ -373,6 +680,7 @@ document.getElementById("newgoal-create").onclick = () => {
 };
 
 render();
+attachExpenseEvents();
 </script>
 </body>
 </html>
