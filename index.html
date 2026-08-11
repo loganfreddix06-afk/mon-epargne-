@@ -347,7 +347,7 @@ let goals = loadGoals();
 let log = loadLog();
 
 function formatEUR(n) {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 }
 
 function gaugeSVG(percent, color) {
