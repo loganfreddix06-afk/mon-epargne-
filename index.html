@@ -63,6 +63,9 @@
   .gauge-amt { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8B9299; margin-top: 2px; }
   .card h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; font-size: 16px; color: #EDEAE3; margin: 8px 0 0; }
   .card .rate { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #E8A33D; }
+  .card .interest {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7FB77E; margin-top: 2px;
+  }
   .card .note { font-size: 12px; color: #8B9299; text-align: center; margin-top: 2px; }
 
   .add-btn {
@@ -214,6 +217,10 @@
         <span class="value" id="matelas-value">0 € / 3 000 €</span>
       </div>
       <div class="matelas-bar"><div class="matelas-fill" id="matelas-fill" style="width:0%"></div></div>
+      <div class="matelas-row" style="margin-top:8px;">
+        <span class="split-sub" style="display:inline;">Intérêts estimés cette année (au 31/12) :</span>
+        <span class="value" id="interest-total">0,00 €</span>
+      </div>
     </div>
   </div>
 
@@ -347,7 +354,21 @@ let goals = loadGoals();
 let log = loadLog();
 
 function formatEUR(n) {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+  const rounded = Math.round((n + Number.EPSILON) * 100) / 100;
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(rounded);
+}
+
+function parseRate(rateStr) {
+  if (!rateStr) return null;
+  const match = rateStr.match(/[\d,.]+/);
+  if (!match) return null;
+  return parseFloat(match[0].replace(",", "."));
+}
+
+function estimatedAnnualInterest(current, rateStr) {
+  const rate = parseRate(rateStr);
+  if (rate === null) return null;
+  return current * (rate / 100);
 }
 
 function gaugeSVG(percent, color) {
@@ -388,6 +409,12 @@ function render() {
   fill.style.width = matelasPct + "%";
   fill.classList.toggle("done", matelasPct >= 100);
 
+  const totalInterest = goals.reduce((s, g) => {
+    const i = estimatedAnnualInterest(g.current, g.rate);
+    return s + (i || 0);
+  }, 0);
+  document.getElementById("interest-total").textContent = formatEUR(totalInterest);
+
   // Goal cards
   const gridEl = document.getElementById("goals-grid");
   gridEl.innerHTML = "";
@@ -412,6 +439,12 @@ function render() {
         </div>
         <h3>${g.name}</h3>
         ${g.rate ? `<span class="rate">${g.rate}</span>` : ""}
+        ${(() => {
+          const interest = estimatedAnnualInterest(g.current, g.rate);
+          return interest !== null && interest > 0
+            ? `<span class="interest">≈ ${formatEUR(interest)} d'intérêts / an</span>`
+            : "";
+        })()}
         ${g.note ? `<span class="note">${g.note}</span>` : ""}
       </div>
       <button class="add-btn" data-goal="${g.id}">
