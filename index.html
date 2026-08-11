@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Épargne">
+<title>Tableau de bord — Épargne</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #1B1D1F;
+    font-family: 'Inter', sans-serif;
+    color: #EDEAE3;
+    padding: 28px 16px 60px;
+  }
+  input:focus, button:focus-visible { outline: 2px solid #E8A33D; outline-offset: 1px; }
+  ::placeholder { color: #5C6266; }
+  button { cursor: pointer; font-family: inherit; }
+
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .eyebrow span {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8B9299;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #EDEAE3;
+    font-size: 30px; letter-spacing: 0.5px; margin: 4px 0 24px;
+  }
+  h2 {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+    color: #EDEAE3; font-size: 16px; margin-bottom: 10px;
+  }
+
+  .panel { background: #24272A; border: 1px solid #34383B; border-radius: 10px; }
+
+  .matelas { padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+  .matelas-bar { height: 8px; background: #1B1D1F; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+  .matelas-fill { height: 100%; background: #E8A33D; transition: width 0.6s ease; }
+  .matelas-fill.done { background: #7FB77E; }
+  .matelas-row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .matelas-row .label {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;
+  }
+  .matelas-row .value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8B9299; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+
+  .card { padding: 20px 18px; position: relative; }
+  .card .remove-goal {
+    position: absolute; top: 14px; right: 14px; background: none; border: none;
+    color: #5C6266; padding: 4px;
+  }
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .gauge-svg-holder { position: relative; width: 176px; height: 176px; display: flex; align-items: center; justify-content: center; }
+  .gauge-readout { position: absolute; display: flex; flex-direction: column; align-items: center; }
+  .gauge-pct { font-family: 'JetBrains Mono', monospace; font-size: 22px; color: #EDEAE3; font-weight: 600; }
+  .gauge-amt { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8B9299; margin-top: 2px; }
+  .card h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; font-size: 16px; color: #EDEAE3; margin: 8px 0 0; }
+  .card .rate { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #E8A33D; }
+  .card .note { font-size: 12px; color: #8B9299; text-align: center; margin-top: 2px; }
+
+  .add-btn {
+    margin-top: 16px; width: 100%; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px;
+    color: #EDEAE3; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 13px; padding: 9px 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .add-form { margin-top: 16px; display: flex; gap: 6px; }
+  .add-form input {
+    flex: 1; background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; padding: 8px 10px; min-width: 0;
+  }
+  .add-form .ok { background: #E8A33D; border: none; border-radius: 6px; color: #1B1D1F; padding: 0 14px; font-weight: 700; }
+  .add-form .cancel { background: none; border: 1px solid #34383B; border-radius: 6px; color: #8B9299; padding: 0 10px; }
+
+  .newgoal-btn {
+    background: none; border: 1px dashed #34383B; border-radius: 8px; color: #8B9299;
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px;
+    padding: 10px 16px; width: 100%; margin-bottom: 28px;
+  }
+  .newgoal-form { padding: 16px; margin-bottom: 28px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .newgoal-form input {
+    background: #1B1D1F; border: 1px solid #34383B; border-radius: 6px; color: #EDEAE3; padding: 8px 10px; font-size: 14px;
+  }
+  .newgoal-form input.name { flex: 2 1 160px; }
+  .newgoal-form input.target { flex: 1 1 100px; font-family: 'JetBrains Mono', monospace; }
+  .newgoal-form .create { background: #E8A33D; border: none; border-radius: 6px; color: #1B1D1F; padding: 0 16px; font-weight: 700; }
+  .newgoal-form .cancel { background: none; border: 1px solid #34383B; border-radius: 6px; color: #8B9299; padding: 0 10px; }
+
+  .log-panel { overflow: hidden; }
+  .log-empty, .log-loading { padding: 20px; color: #8B9299; font-size: 13px; }
+  .log-row {
+    display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid #34383B;
+  }
+  .log-row:first-child { border-top: none; }
+  .log-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .log-left .goalname { color: #EDEAE3; font-size: 14px; }
+  .log-left .date { color: #5C6266; font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+  .log-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .log-right .amt { font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+  .log-right .amt.pos { color: #7FB77E; }
+  .log-right .amt.neg { color: #D97A4A; }
+  .log-right .del { background: none; border: none; color: #5C6266; padding: 4px; display: flex; }
+
+  svg .track { stroke: #34383B; }
+  svg .tick { stroke: #5C6266; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="eyebrow">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3-1.6 1.6a2 2 0 0 0 0 2.8l2.2 2.2a2 2 0 0 0 2.8 0l1.6-1.6c1.4 1.4 2.3 2.5 2.3 4.3A4.5 4.5 0 0 1 17.5 20c-1.8 0-2.9-.9-4.3-2.3L6 10.4A4.5 4.5 0 0 1 6 4.3c1.4-1.4 3.2-1.9 4.7-1.4l-1.6 1.6a2 2 0 0 0 0 2.8l1.6 1.6a2 2 0 0 0 2.8 0Z"/></svg>
+    <span>Carnet d'entretien financier</span>
+  </div>
+  <h1>Tableau de bord — Épargne</h1>
+
+  <div class="panel matelas">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v3"/></svg>
+    <div style="flex:1; min-width:0;">
+      <div class="matelas-row">
+        <span class="label">Objectif matelas de sécurité</span>
+        <span class="value" id="matelas-value">0 € / 3 000 €</span>
+      </div>
+      <div class="matelas-bar"><div class="matelas-fill" id="matelas-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="grid" id="goals-grid"></div>
+
+  <button class="newgoal-btn" id="show-newgoal-btn">+ Ajouter un autre objectif</button>
+  <div class="newgoal-form panel" id="newgoal-form" style="display:none;">
+    <input class="name" id="newgoal-name" placeholder="Nom de l'objectif">
+    <input class="target" id="newgoal-target" type="number" placeholder="Objectif €">
+    <button class="create" id="newgoal-create">Créer</button>
+    <button class="cancel" id="newgoal-cancel">✕</button>
+  </div>
+
+  <h2>Carnet de bord</h2>
+  <div class="panel log-panel" id="log-panel"></div>
+</div>
+
+<script>
+const STORAGE_KEY = "epargne-goals-v1";
+const LOG_KEY = "epargne-log-v1";
+const MATELAS_TARGET = 3000;
+
+const DEFAULT_GOALS = [
+  { id: "livret-jeune", name: "Livret Jeune", target: 1600, current: 0, rate: "3,75 %", note: "Priorité n°1 — meilleur taux" },
+  { id: "lep", name: "LEP", target: 10000, current: 0, rate: "2,50 %", note: "Sous réserve d'éligibilité" },
+  { id: "livret-a", name: "Livret A", target: 22950, current: 0, rate: "1,70 %", note: "Le reste de l'épargne" },
+];
+
+function loadGoals() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return DEFAULT_GOALS.map(g => ({ ...g }));
+}
+function saveGoals(goals) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+}
+function loadLog() {
+  try {
+    const raw = localStorage.getItem(LOG_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return [];
+}
+function saveLog(log) {
+  localStorage.setItem(LOG_KEY, JSON.stringify(log));
+}
+
+let goals = loadGoals();
+let log = loadLog();
+
+function formatEUR(n) {
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+}
+
+function gaugeSVG(percent, color) {
+  const size = 176, stroke = 12, r = (size - stroke) / 2, cx = size / 2, cy = size / 2;
+  const startAngle = -225, sweep = 270;
+  const clamped = Math.max(0, Math.min(100, percent));
+  const valueAngle = startAngle + (sweep * clamped) / 100;
+
+  function polar(angleDeg, radius) {
+    const a = (angleDeg * Math.PI) / 180;
+    return { x: cx + radius * Math.cos(a), y: cy + radius * Math.sin(a) };
+  }
+  function arcPath(a0, a1, radius) {
+    const p0 = polar(a0, radius), p1 = polar(a1, radius);
+    const largeArc = a1 - a0 <= 180 ? 0 : 1;
+    return `M ${p0.x} ${p0.y} A ${radius} ${radius} 0 ${largeArc} 1 ${p1.x} ${p1.y}`;
+  }
+  const ticks = Array.from({ length: 6 }, (_, i) => startAngle + (sweep * i) / 5)
+    .map(t => {
+      const p1 = polar(t, r - stroke / 2 - 3), p2 = polar(t, r - stroke / 2 - 9);
+      return `<line class="tick" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke-width="2"/>`;
+    }).join("");
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <path class="track" d="${arcPath(startAngle, startAngle + sweep, r)}" fill="none" stroke-width="${stroke}" stroke-linecap="round"/>
+    <path d="${arcPath(startAngle, valueAngle, r)}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" style="transition: all 0.6s cubic-bezier(0.4,0,0.2,1)"/>
+    ${ticks}
+    <circle cx="${cx}" cy="${cy}" r="4" fill="${color}"/>
+  </svg>`;
+}
+
+function render() {
+  // Matelas banner
+  const totalCurrent = goals.reduce((s, g) => s + g.current, 0);
+  const matelasPct = Math.min(100, (totalCurrent / MATELAS_TARGET) * 100);
+  document.getElementById("matelas-value").textContent = `${formatEUR(totalCurrent)} / ${formatEUR(MATELAS_TARGET)}`;
+  const fill = document.getElementById("matelas-fill");
+  fill.style.width = matelasPct + "%";
+  fill.classList.toggle("done", matelasPct >= 100);
+
+  // Goal cards
+  const gridEl = document.getElementById("goals-grid");
+  gridEl.innerHTML = "";
+  goals.forEach(g => {
+    const pct = g.target > 0 ? (g.current / g.target) * 100 : 0;
+    const color = pct >= 100 ? "#7FB77E" : pct >= 60 ? "#E8A33D" : "#D97A4A";
+    const canRemove = g.id.startsWith("custom-");
+
+    const card = document.createElement("div");
+    card.className = "panel card";
+    card.innerHTML = `
+      ${canRemove ? `<button class="remove-goal" data-goal="${g.id}" aria-label="Supprimer ${g.name}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>` : ""}
+      <div class="gauge-wrap">
+        <div class="gauge-svg-holder">
+          ${gaugeSVG(pct, color)}
+          <div class="gauge-readout">
+            <span class="gauge-pct">${Math.round(pct)}%</span>
+            <span class="gauge-amt">${formatEUR(g.current)} / ${formatEUR(g.target)}</span>
+          </div>
+        </div>
+        <h3>${g.name}</h3>
+        ${g.rate ? `<span class="rate">${g.rate}</span>` : ""}
+        ${g.note ? `<span class="note">${g.note}</span>` : ""}
+      </div>
+      <button class="add-btn" data-goal="${g.id}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        Ajouter un versement
+      </button>
+      <div class="add-form" data-goal="${g.id}" style="display:none;">
+        <input type="number" inputmode="decimal" placeholder="Montant €">
+        <button class="ok">OK</button>
+        <button class="cancel">✕</button>
+      </div>
+    `;
+    gridEl.appendChild(card);
+  });
+
+  // Log
+  const logEl = document.getElementById("log-panel");
+  if (log.length === 0) {
+    logEl.innerHTML = `<div class="log-empty">Aucun versement enregistré pour l'instant. Ajoute ton premier versement sur une jauge ci-dessus.</div>`;
+  } else {
+    logEl.innerHTML = log.map(entry => `
+      <div class="log-row">
+        <div class="log-left">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5C6266" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="goalname">${entry.goalName}</span>
+          <span class="date">${entry.date}</span>
+        </div>
+        <div class="log-right">
+          <span class="amt ${entry.amount >= 0 ? "pos" : "neg"}">${entry.amount >= 0 ? "+" : ""}${formatEUR(entry.amount)}</span>
+          <button class="del" data-entry="${entry.id}" aria-label="Supprimer ce versement">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  attachEvents();
+}
+
+function attachEvents() {
+  document.querySelectorAll(".add-btn").forEach(btn => {
+    btn.onclick = () => {
+      const goalId = btn.dataset.goal;
+      btn.style.display = "none";
+      const form = document.querySelector(`.add-form[data-goal="${goalId}"]`);
+      form.style.display = "flex";
+      form.querySelector("input").focus();
+    };
+  });
+
+  document.querySelectorAll(".add-form").forEach(form => {
+    const goalId = form.dataset.goal;
+    const input = form.querySelector("input");
+    const ok = form.querySelector(".ok");
+    const cancel = form.querySelector(".cancel");
+    const btn = document.querySelector(`.add-btn[data-goal="${goalId}"]`);
+
+    function confirmAdd() {
+      const v = parseFloat(input.value);
+      if (!isNaN(v) && v !== 0) {
+        const g = goals.find(g => g.id === goalId);
+        g.current = Math.max(0, g.current + v);
+        saveGoals(goals);
+        log.unshift({
+          id: `${Date.now()}`,
+          goalName: g.name,
+          amount: v,
+          date: new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" }),
+        });
+        log = log.slice(0, 30);
+        saveLog(log);
+      }
+      render();
+    }
+
+    ok.onclick = confirmAdd;
+    input.onkeydown = (e) => { if (e.key === "Enter") confirmAdd(); };
+    cancel.onclick = () => { form.style.display = "none"; btn.style.display = "flex"; input.value = ""; };
+  });
+
+  document.querySelectorAll(".remove-goal").forEach(btn => {
+    btn.onclick = () => {
+      goals = goals.filter(g => g.id !== btn.dataset.goal);
+      saveGoals(goals);
+      render();
+    };
+  });
+
+  document.querySelectorAll(".del").forEach(btn => {
+    btn.onclick = () => {
+      const entryId = btn.dataset.entry;
+      const entry = log.find(e => e.id === entryId);
+      if (entry) {
+        const g = goals.find(g => g.name === entry.goalName);
+        if (g) g.current = Math.max(0, g.current - entry.amount);
+        saveGoals(goals);
+        log = log.filter(e => e.id !== entryId);
+        saveLog(log);
+      }
+      render();
+    };
+  });
+}
+
+document.getElementById("show-newgoal-btn").onclick = () => {
+  document.getElementById("show-newgoal-btn").style.display = "none";
+  document.getElementById("newgoal-form").style.display = "flex";
+};
+document.getElementById("newgoal-cancel").onclick = () => {
+  document.getElementById("newgoal-form").style.display = "none";
+  document.getElementById("show-newgoal-btn").style.display = "block";
+};
+document.getElementById("newgoal-create").onclick = () => {
+  const name = document.getElementById("newgoal-name").value.trim();
+  const target = parseFloat(document.getElementById("newgoal-target").value);
+  if (!name || isNaN(target) || target <= 0) return;
+  goals.push({ id: `custom-${Date.now()}`, name, target, current: 0, rate: "", note: "" });
+  saveGoals(goals);
+  document.getElementById("newgoal-name").value = "";
+  document.getElementById("newgoal-target").value = "";
+  document.getElementById("newgoal-form").style.display = "none";
+  document.getElementById("show-newgoal-btn").style.display = "block";
+  render();
+};
+
+render();
+</script>
+</body>
+</html>
